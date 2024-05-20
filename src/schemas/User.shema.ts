@@ -28,6 +28,8 @@ export class User {
     @Prop({required: false})
     profilepic?: string;
 
+    createdAt: string;
+    updatedAt: string;
 }
 
 export const userschema = SchemaFactory.createForClass(User)
