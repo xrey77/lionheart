@@ -2,8 +2,8 @@ import React from 'react'
 
 const Footer: React.FC = () => {
     return (
-      <div>
-        <h5>Footer</h5>
+      <div className="footer fixed-bottom">
+        Copyright &copy; 2024, Lion Heart Taekwondo Mission, All rights reserved.
       </div>
     );
   };

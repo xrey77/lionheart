@@ -2,16 +2,30 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
+// import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+// import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DB_URI),
     UsersModule,
+    // ThrottlerModule.forRoot([
+    // {
+    //   name: 'short',
+    //   ttl: 1000,
+    //   limit: 3,
+    // },{
+    //   name: 'long',
+    //   ttl: 60000,
+    //   limit: 100
+    // }])
     ],
-  controllers: [AppController],
-  providers: [],
+  controllers: [],
+  // providers: [{
+    // provide: APP_GUARD,
+    // useClass: ThrottlerGuard
+  // }],
 })
 export class AppModule {}
 

@@ -3,18 +3,30 @@ import { AppModule } from './app.module';
 // import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { ValidationPipe, BadRequestException } from '@nestjs/common';
+
 
 async function bootstrap() {
-  // const app = await NestFactory.create(AppModule);
-  // app.useGlobalPipes(new ValidationPipe());
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
+  // app.useGlobalPipes(new ValidationPipe());  
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const result = errors.map((error) => ({
+          property: error.property,
+          message: error.constraints[Object.keys(error.constraints)[0]],
+        }));
+        return new BadRequestException(result);
+      },
+      stopAtFirstError: true,
+    }),
   );
-
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');  
   
-  await app.listen(3000);
+  app.useStaticAssets(join(__dirname, '..', '../public'));  
+  app.enableCors();
+  app.setGlobalPrefix('api')
+
+  
+  await app.listen(4000);
 }
 bootstrap();

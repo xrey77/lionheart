@@ -26,6 +26,8 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/serve-static": "^4.0.2",
+    "@nestjs/throttler": "^5.1.2",
     "@types/express-handlebars": "^6.0.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",

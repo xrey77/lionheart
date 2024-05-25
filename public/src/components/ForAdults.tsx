@@ -2,9 +2,7 @@ import React from 'react'
 
 const ForAdults: React.FC = () => {
     return (
-      <div>
-        <h1 className="text-center">HipHop for Adults</h1>
-      </div>
+        <h1 className="text-center">Class for Adults</h1>
     );
   };
   
