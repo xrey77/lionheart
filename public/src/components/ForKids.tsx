@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-
-// const host = axios.create({
-//   baseURL: "http:/localhost:4000",
-//   headers: {'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'Authorization': 'inherit'},
-// })
+import { SlowBuffer } from 'buffer';
 
 const ForKids: React.FC = () => {  
   const params = useParams();
     const [users,setUsers] = useState([]);
-    let token = "";
+    const token = sessionStorage.getItem('TOKEN')
+    const [userMessage, setUserMessage] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
-      
-      console.log("USER ID : " + sessionStorage.getItem('USERID'));
-
       const getClass = async () => {
-
-        let url = "/api/users";
-       let opt = { headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`}}
+      let url = "/api/users";
+      let opt = { headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`}}
 
        await axios.get(url, opt)
         .then((res: any) => {
           setUsers(res.data);
-        },(error: any) => {
-          console.log(error);
-        });
+        }).catch((error: any) => {
+          setUserMessage(error.response.statusText);
+          window.setTimeout(() => {
+              navigate("/", {replace: true});
+          }, 3000);
+        })        
       }
       getClass();
     },[token])
@@ -64,6 +59,12 @@ const ForKids: React.FC = () => {
           )}
           </tbody>
         </table>
+        {
+          token === null ?
+            <div className='text-center text-white mt-3'>**** {userMessage} ****</div>
+          :
+            null
+        }
         </div>
         </>
 

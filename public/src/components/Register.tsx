@@ -41,7 +41,7 @@ const Register: React.FC = () => {
             'Accept': 'application/json', 
             'Content-Type': 'application/json',
             'Authorization': 'inherit'}}    
-         axios.post("/api/users/signup",data, opt)
+         axios.post("/api/auth/signup",data, opt)
         .then((res: any) => {
              if (res.data.statusCode === 400) {
                 setRegistrationMessage(res.data.message);

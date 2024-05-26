@@ -1,11 +1,13 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, 
-    UsePipes, ValidationPipe } from '@nestjs/common';
+    UsePipes, ValidationPipe,UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from 'src/dto/CreateUser.dto';
+// import { CreateUserDto } from 'src/dto/CreateUser.dto';
 import mongoose from 'mongoose';
 import { UpdateUserdto } from 'src/dto/UpdateUser.dto';
-import { LoginUserDto } from 'src/dto/LoginUser.dto';
-import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { threadId } from 'worker_threads';
+// import { LoginUserDto } from 'src/dto/LoginUser.dto';
+// import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 // IF YOU WANT TO SKIPT Throttle
 // import { Throttle, SkipThrottle} from '@nestjs/throttler';
@@ -17,9 +19,10 @@ export class UsersController {
         private readonly usersService: UsersService) {}
 
     // @SkipThrottle({ default: false})
+    @UseGuards(AuthGuard)    
     @Get()  // GET /users
     findAll() {
-        return this.usersService.findAll().sort('firstname')
+          return this.usersService.findAll().sort('firstname')
     }
 
     // @Throttle({ short: { ttl: 1000, limit: 1}})
@@ -28,28 +31,6 @@ export class UsersController {
         const isIdValid = mongoose.Types.ObjectId.isValid(id);
         if (!isIdValid) throw new HttpException('User not found', 404);
         return await this.usersService.findUserid(id)
-    }
-
-    @Post('/signin')
-    async signIn(@Body() loginUserDto: LoginUserDto) {
-     try {
-       let usrs = await this.usersService.findUsername(loginUserDto.username, loginUserDto.password)
-       if (usrs) {
-        return {data: usrs, message: 'Access Granted', statusCode: 200}
-       }
-     } catch(error) {
-        return {message: error.response, statusCode: error.status}
-     }       
-    }
-
-    @Post('/signup')
-    // @UsePipes(new ValidationPipe())
-    async createUser(@Body() createUserDto: CreateUserDto) {
-        try {
-            return await this.usersService.createUser(createUserDto)
-        } catch(error) {
-            return {message: "Duplicate key error found.", statusCode: 400}
-        }
     }
 
     @Patch(':id')

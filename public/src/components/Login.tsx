@@ -22,7 +22,7 @@ const Login: React.FC = () => {
             'Accept': 'application/json', 
             'Content-Type': 'application/json',
             'Authorization': 'inherit'}}    
-        await axios.post("/api/users/signin",data, opt)
+        await axios.post("/api/auth/signin",data, opt)
         .then((res: any) => {
              if (res.data.statusCode === 401) {
                  setLoginmessage(res.data.message);
