@@ -10,7 +10,8 @@ const Navbar: React.FC = () => {
   const redbelt = ['RED']
   const brownbelt = ['BROWN']
   const blackbelt = ['BLACK']
-  const xusername = sessionStorage.getItem('USERNAME') 
+  const xusername = sessionStorage.getItem('USERNAME'); 
+  const xprofilepic = sessionStorage.getItem('USERPIC');
   const navigate = useNavigate()
 
   const logOut = (event: any) => {
@@ -84,7 +85,13 @@ return (
         :
         <li className="nav-item dropstart">
         <Link className="nav-link dropdown-toggle active text-dark" to={'#'} role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          {xusername}
+          {
+            xprofilepic === null ?
+            <img className='user' src='/images/users/001.png' alt=""/>
+          :
+            <img className='user' src={xprofilepic} alt=""/>
+          }
+          <span className='text-dark'>{xusername}</span>
         </Link>
         <ul className="dropdown-menu">
           <li><NavLink className="dropdown-item" to={'/#'} onClick={logOut}>Log-Out</NavLink></li>
@@ -161,7 +168,13 @@ return (
           <div><hr/></div>
           <div className="nav-item dropstart">
           <Link className="nav-link dropdown-toggle active" to={'#'} data-bs-toggle="dropdown"role="button" aria-expanded="false">
-            {xusername}
+            {
+              xprofilepic === null ?
+              <img className='user' src='/images/users/001.png' alt=""/>
+            :
+              <img className='user' src={xprofilepic} alt=""/>
+            }
+            <span>{xusername}</span>
           </Link>
           <ul className="dropdown-menu">
             <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" to={`/#`} onClick={logOut}>LogOut</Link></li>

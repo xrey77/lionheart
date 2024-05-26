@@ -43,9 +43,13 @@ export class UsersController {
     }
 
     @Post('/signup')
-    @UsePipes(new ValidationPipe())
-    createUser(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.createUser(createUserDto)
+    // @UsePipes(new ValidationPipe())
+    async createUser(@Body() createUserDto: CreateUserDto) {
+        try {
+            return await this.usersService.createUser(createUserDto)
+        } catch(error) {
+            return {message: "Duplicate key error found.", statusCode: 400}
+        }
     }
 
     @Patch(':id')

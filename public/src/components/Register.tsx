@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import $ from 'jquery';
+import axios from 'axios'
 
 const Register: React.FC = () => {
     const [firstname, setFirstname] = useState("");
@@ -20,18 +21,56 @@ const Register: React.FC = () => {
         $("#registerReset")[0].click();
     }
 
+    const clearForm = () => {
+        setFirstname("");
+        setLastname("");
+        setEmailadd("");
+        setMobileno("");
+        setUsrname("");
+        setPasswd("");
+    }
+
     const submitRegistration = (event: any) => {
         event.preventDefault();
-        setRegistrationMessage("registration test")
-        
+        const data =JSON.stringify({ 
+            firstname: firstname, lastname: lastname,
+            emailadd: emailadd, mobileno: mobileno,
+            username: usrname, password: passwd,
+            role: 'USER', profilepic: '/images/users/001.png' });  
+        let opt = {headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json',
+            'Authorization': 'inherit'}}    
+         axios.post("/api/users/signup",data, opt)
+        .then((res: any) => {
+             if (res.data.statusCode === 400) {
+                setRegistrationMessage(res.data.message);
+                 window.setTimeout(() => {
+                    setRegistrationMessage('');            
+                 }, 3000);
+                 return;
+             }
+             //granted...
+             setRegistrationMessage("New record has been inserted successfully.");
+            window.setTimeout(() => {
+                setRegistrationMessage("");
+             }, 3000);
+
+          }).catch((err: any) => {
+            setRegistrationMessage(err.message);
+            window.setTimeout(() => {
+                setRegistrationMessage('');
+            }, 3000);
+            return;
+          });        
     }
 
     return (
         <div className="modal fade" id="staticRegisterBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticRegisterBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
-            <div className="modal-header bg-success text-white">
-                <h1 className="modal-title fs-5" id="staticRegisterBackdropLabel">Sign-Up</h1>
+            <div className="modal-header bg-info text-white">
+                <h1 className="modal-title fs-5" id="staticRegisterBackdropLabel">User's Registration</h1>
                 <button type="button" onClick={closeRegistration} className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
@@ -81,7 +120,9 @@ const Register: React.FC = () => {
                     </div>                        
                 </div>
 
-                <button type="submit" className="btn btn-success">signup</button>
+                <button type="submit" className="btn btn-outline-info">signup</button>
+                <button type="reset" className="btn btn-outline-warning ms-1" onClick={clearForm}>clear</button>
+
                 <button id="registerReset" type="reset" className="btn btn-primary reset-hide">reset</button>
 
                 </form>
