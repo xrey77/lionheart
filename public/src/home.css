@@ -1,4 +1,5 @@
 body {
-    background-color: gray;
-    color: white;
+    background-image: url('../images/home.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }

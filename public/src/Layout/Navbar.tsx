@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link,NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Login from '../components/Login';
 import Register from '../components/Register';
 
@@ -44,7 +44,7 @@ return (
               Activies
             </Link>
             <ul className="dropdown-menu">
-              <li><NavLink className="dropdown-item" to={'classforkids'}>Class for Kids</NavLink></li>
+              <li><Link className="dropdown-item" to={'classforkids'}>Class for Kids</Link></li>
               <li><Link className="dropdown-item" to={'classforadults'}>Class for Adults</Link></li>
               <li><hr className="dropdown-divider" /></li>
               <li><Link className="dropdown-item" to={'executiveclass'}>Executive Class</Link></li>
@@ -94,7 +94,7 @@ return (
           <span className='text-dark'>{xusername}</span>
         </Link>
         <ul className="dropdown-menu">
-          <li><NavLink className="dropdown-item" to={'/#'} onClick={logOut}>Log-Out</NavLink></li>
+          <li><Link className="dropdown-item" to={'/#'} onClick={logOut}>Log-Out</Link></li>
           <li><Link className="dropdown-item" to={'profile'}>Profile</Link></li>
         </ul>
       </li>

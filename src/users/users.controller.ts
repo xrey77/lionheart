@@ -5,13 +5,13 @@ import { UsersService } from './users.service';
 import mongoose from 'mongoose';
 import { UpdateUserdto } from 'src/dto/UpdateUser.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { threadId } from 'worker_threads';
 // import { LoginUserDto } from 'src/dto/LoginUser.dto';
 // import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 // IF YOU WANT TO SKIPT Throttle
 // import { Throttle, SkipThrottle} from '@nestjs/throttler';
 // @SkipThrottle()
+@UseGuards(AuthGuard)    
 @Controller('users')
 export class UsersController {
 
@@ -19,7 +19,6 @@ export class UsersController {
         private readonly usersService: UsersService) {}
 
     // @SkipThrottle({ default: false})
-    @UseGuards(AuthGuard)    
     @Get()  // GET /users
     findAll() {
           return this.usersService.findAll().sort('firstname')
@@ -35,8 +34,8 @@ export class UsersController {
 
     @Patch(':id')
     @UsePipes(new ValidationPipe())
-    updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserdto) {
-        return this.usersService.updateUser(updateUserDto);
+    async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserdto) {     
+        return this.usersService.updateUser(id, updateUserDto);
     }
 
     @Delete(':id')

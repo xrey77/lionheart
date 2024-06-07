@@ -1,5 +1,5 @@
 import { InjectModel} from '@nestjs/mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User } from 'src/schemas/User.shema';
 import { UpdateUserdto } from 'src/dto/UpdateUser.dto';
@@ -20,14 +20,20 @@ export class UsersService {
         return this.userModel.findById(id)
     }    
 
-    async updateUser(updateUserDto: UpdateUserdto) {
+    async updateUser(id: string, updateUserDto: UpdateUserdto) {
         if (updateUserDto.password !== undefined) {
             const saltOrRounds = 10;
             const password = updateUserDto.password;
             const hash = await bcrypt.hash(password, saltOrRounds);
             updateUserDto.password = hash;                
         } 
-        return this.userModel.updateOne(updateUserDto)
+
+        const existingUser = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+        if (!existingUser) {
+          throw new NotFoundException(`User #${id} not found`);
+        }
+        return existingUser;
+        // return this.userModel.updateOne(updateUserDto)
     }
  
     deleteUser(id: string) {

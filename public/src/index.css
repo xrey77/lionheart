@@ -29,3 +29,24 @@
 .reset-hide {
   visibility: hidden;
 }
+
+.profilecard {
+  width: 80%!important;
+  margin: auto;
+}
+
+.profilepic {
+  width: 150px!important;
+  max-width: 150px;
+  height: 150px;
+  max-height: 150px;
+  border-radius: 5%;
+}
+
+.msg-size {
+  font-size: 12px;
+}
+
+.profile-btn {
+ width: 80%!important;
+}

@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 // import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 // import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { InfoModule } from './info/info.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRoot(process.env.DB_URI),
     UsersModule,
     AuthModule,
+    InfoModule,
+    MulterModule.register({dest: './public/images'})
     // ThrottlerModule.forRoot([
     // {
     //   name: 'short',
