@@ -41,19 +41,67 @@ const Profile: React.FC = () => {
 
     const saveProfiledata = (event: any) => {
         event.preventDefault();
+        const data =JSON.stringify({ firstname: firstname, lastname: lastname, mobileno: mobileno });  
+        let opt = {headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`}}    
+        axios.patch(`/api/users/${id}`,data, opt)
+        .then((res: any) => {
+            setProfileMessage(res.data.message)
+        })
+        .catch((error: any) => {
+            setProfileMessage(error.message)
+        })
         alert("save..")
     }
 
     const enable = () => {
-        alert("enabled")
+        let opt = {headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'form-data/multipart',
+            'Authorization': `Bearer ${token}`}} 
+        const data =JSON.stringify({ otp: 1 });  
+        axios.patch(`/api/users/updateuser/${id}`,data,opt)
+        .then((res: any) => {
+            setProfileMessage(res.data.message)
+        })
+        .catch((error: any) => {
+            setProfileMessage(error.message)
+        })
     }
 
     const disable = () => {
-        alert("disabled")
+        let opt = {headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'form-data/multipart',
+            'Authorization': `Bearer ${token}`}} 
+        const data =JSON.stringify({ otp: 0 });  
+        axios.patch(`/api/users/updateuser/${id}`,data,opt)
+        .then((res: any) => {
+            setProfileMessage(res.data.message)
+        })
+        .catch((error: any) => {
+            setProfileMessage(error.message)
+        })
     }
 
     const changeProfilepic = (event: any) => {
-        $("#userpic").attr('src',URL.createObjectURL(event.target.files[0]));
+        $("#userpic").attr('src',URL.createObjectURL(event.target.files[0]));        
+        let opt = {headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'form-data/multipart',
+            'Authorization': `Bearer ${token}`}} 
+        let formData = new FormData();
+        formData.append("profilepic", event.target.files[0]);
+        axios.patch(`/api/info/updateuserpic/${id}`,formData,opt)
+        .then((res: any) => {
+            setProfileMessage(res.data.message)
+        })
+        .catch((error: any) => {
+            setProfileMessage(error.message)
+        })
+        
     }
 
     const changePassword = (event: any) => {
@@ -66,9 +114,22 @@ const Profile: React.FC = () => {
             setProfileMessage("Please enter new password confirmation...")
             return;
         }
+        let opt = {headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'form-data/multipart',
+            'Authorization': `Bearer ${token}`}} 
+        const data =JSON.stringify({ password: newPassword });  
+        axios.patch(`/api/users/${id}`,data, opt)
+        .then((res: any) => {
+            setProfileMessage(res.data.message)
+        })
+        .catch((error: any) => {
+            setProfileMessage(error.message)
+        })
 
         setProfileMessage("Password has been changed...")
     }
+
     return (
         <div className="card mt-3 profilecard bg-secondary text-light">
         <div className="card-body">

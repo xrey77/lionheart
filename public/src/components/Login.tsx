@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import $ from 'jquery';
 import axios from 'axios';
+import OtpAuth from './OtpAuth';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -54,6 +55,7 @@ const Login: React.FC = () => {
           });
     }
     return (
+        <>
         <div className="modal fade" id="staticLoginBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticLoginBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-sm modal-dialog-centered">
             <div className="modal-content">
@@ -82,6 +84,8 @@ const Login: React.FC = () => {
             </div>
         </div>
         </div>
+        <OtpAuth/>
+        </>
     );
 };
 
